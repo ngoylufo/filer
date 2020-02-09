@@ -1,0 +1,25 @@
+{
+  "name": "@ngoylufo/filer",
+  "version": "0.1.0",
+  "description": "A simple file reader/writer for node.",
+  "main": "./lib/index.js",
+  "scripts": {
+    "watch": "tsc -w",
+    "build": "tsc"
+  },
+  "keywords": [
+    "fs",
+    "file",
+    "read",
+    "write"
+  ],
+  "author": {
+    "name": "Ngoy Pedro C. Lufo",
+    "email": "ngoylufo@gmail.com"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^13.7.0",
+    "typescript": "^3.7.5"
+  }
+}
