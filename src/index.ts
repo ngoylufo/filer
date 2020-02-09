@@ -104,7 +104,7 @@ const some = <V>(value: V) => {
  */
 const none = () => {
   const map = (fn: Function) => none();
-  const chain = (fn: Function) => none();
+  const chain = (fn: Function) => undefined;
 
   return freeze({ map, chain });
 };
