@@ -25,7 +25,7 @@ type JSONReaderOptions = {
 type JSONWriterOptions = {
   replacer?: JSONTransformer;
   space?: string | number;
-}; 
+};
 
 /**
  * Describes the properties of the reader property of a format.
@@ -49,7 +49,7 @@ type FormatWriterProperty = {
 type FormatAttributes = {
   reader?: FormatReaderProperty;
   writer?: FormatWriterProperty;
-}
+};
 
 /**
  * Describes a file format.
@@ -276,7 +276,7 @@ const writeFileSync = (
   }
 
   mop(fs.writeFileSync, file, data, options).chain(identity);
-};  
+};
 
 const filer = freeze({
   JSONReader,
