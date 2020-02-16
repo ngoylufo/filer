@@ -3,24 +3,6 @@
  * A function that parses the data given to it, return the results.
  */
 declare type DataParser = (data: Buffer | String) => any;
-/**
- * A function that transforms the properties of the object being operated on.
- */
-declare type JSONTransformer = (this: any, key: string, value: any) => any;
-/**
- * The options for a function that 'reads'/parses JSON text.
- */
-declare type JSONReaderOptions = {
-    reviver?: JSONTransformer;
-};
-/**
- * The options for a function that 'writes'/stringifies a javascript object as
- * JSON text.
- */
-declare type JSONWriterOptions = {
-    replacer?: JSONTransformer;
-    space?: string | number;
-};
 declare type ReadFileOptions = {
     filename: string;
     options?: {
@@ -64,8 +46,8 @@ declare type Format = {
     attributes: FormatAttributes;
 };
 declare const filer: {
-    JSONReader: (options?: JSONReaderOptions) => DataParser;
-    JSONWriter: (options?: JSONWriterOptions) => (data: any) => string;
+    JSONReader: any;
+    JSONWriter: any;
     formats: {
         has: (extension: string) => boolean;
         get: (extension: string) => FormatAttributes;

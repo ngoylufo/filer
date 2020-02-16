@@ -128,20 +128,6 @@ const mop = (fn: Function, ...args: any[]) => {
 };
 
 /**
- * Creates a function that parses JSON text.
- * @param options Optional arguments for the JSONReader.
- */
-const JSONReader = (options: JSONReaderOptions = {}): DataParser => buffer =>
-  JSON.parse(buffer.toString(), options.reviver);
-
-/**
- * Creates a function that stringifies javascript objects.
- * @param options Optional arguments for the JSONWriter.
- */
-const JSONWriter = (options: JSONWriterOptions = {}) => (data: any) =>
-  JSON.stringify(data, options.replacer, options.space);
-
-/**
  * An object containing information about all the file/extension formats filer
  * knows about.
  */
@@ -186,6 +172,20 @@ const formats = (function() {
 
   return freeze({ has, get, register, unregister });
 })();
+
+/**
+ * Creates a function that parses JSON text.
+ * @param options Optional arguments for the JSONReader.
+ */
+const JSONReader = (options: JSONReaderOptions = {}): DataParser => buffer =>
+  JSON.parse(buffer.toString(), options.reviver);
+
+/**
+ * Creates a function that stringifies javascript objects.
+ * @param options Optional arguments for the JSONWriter.
+ */
+const JSONWriter = (options: JSONWriterOptions = {}) => (data: any) =>
+  JSON.stringify(data, options.replacer, options.space);
 
 /**
  * Reads the contents of a file synchronously.
