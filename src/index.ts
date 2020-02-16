@@ -1,4 +1,4 @@
-import { extname } from 'path';
+import * as path from 'path';
 import * as fs from 'fs';
 
 /* enter: types */
@@ -202,7 +202,7 @@ const readFile = (
   options?: { encoding?: null; flag?: string }
 ) => {
   return new Promise((resolve, reject) => {
-    const { reader = {} } = formats.get(extname(file));
+    const { reader = {} } = formats.get(path.extname(file));
     options = Object.assign({}, reader.options, options);
 
     fs.readFile(file, options, (err, buffer) => {
@@ -229,7 +229,7 @@ const readFileSync = (
   file: string,
   options?: { encoding?: null; flag?: string }
 ): string | Buffer => {
-  const { reader = {} } = formats.get(extname(file));
+  const { reader = {} } = formats.get(path.extname(file));
   options = Object.assign({}, reader.options, options);
 
   if (reader.coerce && is(Function)(reader.coerce)) {
@@ -253,7 +253,7 @@ const writeFile = (file: string, data: any, options?: fs.WriteFileOptions) => {
     const cb: fs.NoParamCallback = (err: NodeJS.ErrnoException | null) =>
       err ? reject(err) : resolve(data);
 
-    const { writer = {} } = formats.get(extname(file));
+    const { writer = {} } = formats.get(path.extname(file));
     options = Object.assign({}, writer.options, options);
 
     if (writer.coerce && is(Function)(writer.coerce)) {
@@ -277,7 +277,7 @@ const writeFileSync = (
   data: any,
   options?: fs.WriteFileOptions
 ) => {
-  const { writer = {} } = formats.get(extname(file));
+  const { writer = {} } = formats.get(path.extname(file));
   options = Object.assign({}, writer.options, options);
 
   if (writer.coerce && is(Function)(writer.coerce)) {
