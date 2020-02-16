@@ -21,6 +21,13 @@ declare type JSONWriterOptions = {
     replacer?: JSONTransformer;
     space?: string | number;
 };
+declare type ReadFileOptions = {
+    filename: string;
+    options?: {
+        encoding?: string | null;
+        flag?: string;
+    };
+};
 /**
  * Describes the properties of the reader property of a format.
  */
@@ -65,14 +72,8 @@ declare const filer: {
         register: ({ extension, attributes }: Format) => void;
         unregister: (extension: string) => void;
     };
-    readFile: (file: string, options?: {
-        encoding?: null | undefined;
-        flag?: string | undefined;
-    } | undefined) => Promise<unknown>;
-    readFileSync: (file: string, options?: {
-        encoding?: null | undefined;
-        flag?: string | undefined;
-    } | undefined) => string | Buffer;
+    readFile: ({ filename, options }: ReadFileOptions) => Promise<unknown>;
+    readFileSync: ({ filename, options }: ReadFileOptions) => any;
     writeFile: (file: string, data: any, options?: string | {
         encoding?: string | null | undefined;
         mode?: string | number | undefined;

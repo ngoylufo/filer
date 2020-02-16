@@ -27,6 +27,11 @@ type JSONWriterOptions = {
   space?: string | number;
 };
 
+type ReadFileOptions = {
+  filename: string;
+  options?: { encoding?: string | null; flag?: string };
+};
+
 /**
  * Describes the properties of the reader property of a format.
  */
@@ -184,51 +189,27 @@ const formats = (function() {
 
 /**
  * Reads the contents of a file synchronously.
- * @param file The relative path to the file.
- * @param options An optional object specifying the encoding and/or
- *    flag to use when reading the contents of the file.
  */
-const readFile = (
-  file: string,
-  options?: { encoding?: null; flag?: string }
-) => {
+const readFile = ({ filename, options }: ReadFileOptions) => {
   return new Promise((resolve, reject) => {
-    const { reader = {} } = formats.get(path.extname(file));
-    options = Object.assign({}, reader.options, options);
-
-    fs.readFile(file, options, (err, buffer) => {
-      if (err) {
-        reject(err);
-      } else {
-        if (reader.coerce && is(Function)(reader.coerce)) {
-          resolve(Buffer.isBuffer(buffer) ? reader.coerce(buffer) : buffer);
-        } else {
-          resolve(buffer);
-        }
-      }
-    });
+    const contents = readFileSync({ filename, options });
+    contents ? resolve(contents) : reject(contents);
   });
 };
 
 /**
  * Reads the contents of a file synchronously.
- * @param file The relative path to the file.
- * @param options An optional object specifying the encoding and/or
- *    flag to use when reading the contents of the file.
  */
-const readFileSync = (
-  file: string,
-  options?: { encoding?: null; flag?: string }
-): string | Buffer => {
-  const { reader = {} } = formats.get(path.extname(file));
+const readFileSync = ({ filename, options }: ReadFileOptions) => {
+  const { reader = {} } = formats.get(path.extname(filename));
   options = Object.assign({}, reader.options, options);
 
   if (reader.coerce && is(Function)(reader.coerce)) {
-    const buffer = mop(fs.readFileSync, file, options).chain(identity);
+    const buffer = mop(fs.readFileSync, filename, options).chain(identity);
     return Buffer.isBuffer(buffer) ? reader.coerce(buffer) : buffer;
   }
 
-  return mop(fs.readFileSync, file, options).chain(identity);
+  return mop(fs.readFileSync, filename, options).chain(identity);
 };
 
 /**
