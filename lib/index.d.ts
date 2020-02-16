@@ -45,10 +45,10 @@ declare type FormatWriterProperty = {
 /**
  * The attributes of a file format.
  */
-interface FormatAttributes {
+declare type FormatAttributes = {
     reader?: FormatReaderProperty;
     writer?: FormatWriterProperty;
-}
+};
 declare const filer: {
     JSONReader: (options?: JSONReaderOptions) => DataParser;
     JSONWriter: (options?: JSONWriterOptions) => (data: any) => string;

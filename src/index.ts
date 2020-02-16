@@ -46,7 +46,7 @@ type FormatWriterProperty = {
 /**
  * The attributes of a file format.
  */
-interface FormatAttributes {
+type FormatAttributes = {
   reader?: FormatReaderProperty;
   writer?: FormatWriterProperty;
 }
