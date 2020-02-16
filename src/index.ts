@@ -7,27 +7,25 @@ import * as fs from 'fs';
 type DataParser = (data: Buffer | String) => any;
 
 /**
- * A function that transforms the results.
- * @param this The current object being transformed.
- * @param key The current key from object being looked at.
- * @param value The value of the key from the object being looked at.
+ * A function that transforms the properties of the object being operated on.
  */
 type JSONTransformer = (this: any, key: string, value: any) => any;
 
 /**
- *
+ * The options for a function that 'reads'/parses JSON text.
  */
 type JSONReaderOptions = {
   reviver?: JSONTransformer;
 };
 
 /**
- *
+ * The options for a function that 'writes'/stringifies a javascript object as
+ * JSON text.
  */
 type JSONWriterOptions = {
   replacer?: JSONTransformer;
   space?: string | number;
-};
+}; 
 
 /**
  *
