@@ -58,9 +58,9 @@ type FormatAttributes = {
 const identity = <T>(x: T): T => x;
 
 /**
- * Given a datatype, returns a predicate that checks if any given
- *    object belongs to that datatype.
- * @param type The datatype the predicate checks objects against.
+ * Given a type, returns a predicate that checks if any given
+ *    object belongs to that type.
+ * @param type The type the predicate checks objects against.
  */
 const is = (type: any) => (x: Object) => Object(x) instanceof type;
 
