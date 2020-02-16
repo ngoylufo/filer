@@ -14,7 +14,7 @@ npm install @ngoylufo/filer
 
 Filer only has two use cases, reading and writing to files. If want to order pizza whilst on the toilet, you've come to the wrong place.
 
-### Require filer, preferably, at the top of your file.
+### Require filer, preferably, at the top of your file
 
 ```js
 const filer = require('@ngoylufo/filer');
@@ -41,7 +41,7 @@ filer
 filer.readFileSync('sample.py');
 ```
 
-### [Optional] Register some formats for default behaviour.
+### [Optional] Register some formats for default behaviour
 
 ```js
 // How to deal with .json files.
