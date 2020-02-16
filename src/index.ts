@@ -102,25 +102,17 @@ const None = () => {
 };
 
 /**
- * 
- * @param fn 
- * @param args 
+ * Performs a synchronous operation, return an Option sum type.
+ * @param fn The operation to perform.
+ * @param args The arguments to pass to the function performing the operation.
  */
-const maybeOperate = (fn: Function, ...args: any[]) => {
+const mop = (fn: Function, ...args: any[]) => {
   try {
     return Some(fn(...args));
   } catch (error) {
     return None();
   }
 };
-
-/**
- * 
- * @param fn 
- * @param args 
- */
-const operate = (fn: Function, ...args: any[]) =>
-  maybeOperate(fn, ...args).chain(identity);
 
 /**
  * Creates a function that parses JSON text.
@@ -223,11 +215,11 @@ const readFileSync = (
   options = Object.assign({}, reader.options, options);
 
   if (reader.coerce && is(Function)(reader.coerce)) {
-    const buffer = operate(fs.readFileSync, file, options);
+    const buffer = mop(fs.readFileSync, file, options).chain(identity);
     return Buffer.isBuffer(buffer) ? reader.coerce(buffer) : buffer;
   }
 
-  return operate(fs.readFileSync, file, options);
+  return mop(fs.readFileSync, file, options).chain(identity);
 };
 
 /**
@@ -274,7 +266,7 @@ const writeFileSync = (
     data = writer.coerce(data);
   }
 
-  operate(fs.writeFileSync, file, data, options);
+  mop(fs.writeFileSync, file, data, options).chain(identity);
 };  
 
 const filer = freeze({
