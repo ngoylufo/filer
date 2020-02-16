@@ -49,29 +49,21 @@ declare type FormatAttributes = {
     reader?: FormatReaderProperty;
     writer?: FormatWriterProperty;
 };
+/**
+ * Describes a file format.
+ */
+declare type Format = {
+    extension: any;
+    attributes: FormatAttributes;
+};
 declare const filer: {
     JSONReader: (options?: JSONReaderOptions) => DataParser;
     JSONWriter: (options?: JSONWriterOptions) => (data: any) => string;
     formats: {
-        (): {
-            [x: string]: FormatAttributes;
-        };
-        /**
-         * Registers a new extension format.
-         * @param ext The file extension of the format. e.g. '.txt' or ['.txt']
-         * @param attributes The attributes of the format to register.
-         */
-        register(ext: any, attributes: FormatAttributes): void;
-        /**
-         * Returns the format for the given extension, if it is registered.
-         * @param ext The extension format to retrieve.
-         */
-        get(ext: string): FormatAttributes;
-        /**
-         * Unregister an extension format.
-         * @param ext The extension of the format to unregister.
-         */
-        unregister(ext: string): void;
+        has: (extension: string) => boolean;
+        get: (extension: string) => FormatAttributes;
+        register: ({ extension, attributes }: Format) => void;
+        unregister: (extension: string) => void;
     };
     readFile: (file: string, options?: {
         encoding?: null | undefined;

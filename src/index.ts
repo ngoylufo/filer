@@ -52,6 +52,14 @@ type FormatAttributes = {
 }
 
 /**
+ * Describes a file format.
+ */
+type Format = {
+  extension: any;
+  attributes: FormatAttributes;
+};
+
+/**
  * The identity function. Returns the given object unchanged.
  * @param x The object.
  */
@@ -129,48 +137,49 @@ const JSONWriter = (options: JSONWriterOptions = {}) => (data: any) =>
   JSON.stringify(data, options.replacer, options.space);
 
 /**
- *
+ * An object containing information about all the file/extension formats filer
+ * knows about.
  */
 const formats = (function() {
-  let fmts: { [x: string]: FormatAttributes } = {};
+  let formats: { [x: string]: FormatAttributes } = {};
 
   /**
-   * Returns all the registered extension formats.
+   * Checks whether the given extension has been registered as a format.
+   * @param extension The extension of the format.
    */
-  const formats = () => ({ ...fmts });
+  const has = (extension: string) => formats.hasOwnProperty(extension);
+
+  /**
+   * Returns the format attributes for the given extension, if it registered.
+   * @param extension The extension format to retrieve.
+   */
+  const get = (extension: string) => formats[extension] || {};
 
   /**
    * Registers a new extension format.
-   * @param ext The file extension of the format. e.g. '.txt' or ['.txt']
-   * @param attributes The attributes of the format to register.
+   * @param format The extension format to register, obviously.
    */
-  formats.register = (ext: any, attributes: FormatAttributes) => {
+  const register = ({ extension, attributes }: Format) => {
     const { reader = {}, writer = {} } = attributes;
     const format = freeze({ reader, writer });
 
-    (is(String)(ext) ? [ext] : ext).forEach((ext: string) => {
-      fmts = { ...fmts, [ext]: format };
+    (is(String)(extension) ? [extension] : extension).forEach((ext: string) => {
+      formats = { ...formats, [ext]: format };
     });
 
-    Object.freeze(fmts);
+    Object.freeze(formats);
   };
-
-  /**
-   * Returns the format for the given extension, if it is registered.
-   * @param ext The extension format to retrieve.
-   */
-  formats.get = (ext: string) => fmts[ext] || {};
 
   /**
    * Unregister an extension format.
-   * @param ext The extension of the format to unregister.
+   * @param extension The extension of the format to unregister.
    */
-  formats.unregister = (ext: string) => {
-    const { [ext]: _, ...others } = fmts;
-    fmts = Object.freeze(others);
+  const unregister = (extension: string) => {
+    const { [extension]: _, ...others } = formats;
+    formats = Object.freeze(others);
   };
 
-  return formats;
+  return freeze({ has, get, register, unregister });
 })();
 
 /**
