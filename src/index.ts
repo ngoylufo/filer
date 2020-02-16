@@ -32,6 +32,12 @@ type ReadFileOptions = {
   options?: { encoding?: string | null; flag?: string };
 };
 
+type WriteFileOptions = {
+  filename: string;
+  data: any;
+  options?: fs.WriteFileOptions;
+};
+
 /**
  * Describes the properties of the reader property of a format.
  */
@@ -215,48 +221,24 @@ const readFileSync = ({ filename, options }: ReadFileOptions) => {
 /**
  * Write contents to a file asynchronously, replaces the file if it exists by
  * default.
- * @param file The relative path to the file.
- * @param data The data to write to the file.
- * @param options An optional object specifying the encoding, mode and/or
- *    flag to use when writing to the file.
  */
-const writeFile = (file: string, data: any, options?: fs.WriteFileOptions) => {
-  return new Promise((resolve, reject) => {
-    const cb: fs.NoParamCallback = (err: NodeJS.ErrnoException | null) =>
-      err ? reject(err) : resolve(data);
-
-    const { writer = {} } = formats.get(path.extname(file));
-    options = Object.assign({}, writer.options, options);
-
-    if (writer.coerce && is(Function)(writer.coerce)) {
-      data = writer.coerce(data);
-    }
-
-    fs.writeFile(file, data, options, cb);
-  });
+const writeFile = ({ filename, data, options }: WriteFileOptions) => {
+  return Promise.resolve(writeFileSync({ filename, data, options }));
 };
 
 /**
  * Write contents to a file synchronously, replaces the file if it exists by
  * default.
- * @param file The relative path to the file.
- * @param data The data to write to the file.
- * @param options An optional object specifying the encoding, mode and/or
- *    flag to use when writing to the file.
  */
-const writeFileSync = (
-  file: string,
-  data: any,
-  options?: fs.WriteFileOptions
-) => {
-  const { writer = {} } = formats.get(path.extname(file));
+const writeFileSync = ({ filename, data, options }: WriteFileOptions) => {
+  const { writer = {} } = formats.get(path.extname(filename));
   options = Object.assign({}, writer.options, options);
 
   if (writer.coerce && is(Function)(writer.coerce)) {
     data = writer.coerce(data);
   }
 
-  mop(fs.writeFileSync, file, data, options).chain(identity);
+  mop(fs.writeFileSync, filename, data, options);
 };
 
 const filer = freeze({
