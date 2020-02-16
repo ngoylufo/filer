@@ -84,8 +84,8 @@ const freeze = <T>(object: T): T => {
  * The **Some** case for the Option sum type.
  * @param value The value for the case.
  */
-const some = <V>(value: V) => {
-  const map = (fn: Function) => some(fn(value));
+const Some = <V>(value: V) => {
+  const map = (fn: Function) => Some(fn(value));
   const chain = (fn: Function) => fn(value);
 
   return freeze({ value, map, chain });
@@ -94,8 +94,8 @@ const some = <V>(value: V) => {
 /**
  * The **None** case for the Option sum type.
  */
-const none = () => {
-  const map = (fn: Function) => none();
+const None = () => {
+  const map = (fn: Function) => None();
   const chain = (fn: Function) => undefined;
 
   return freeze({ map, chain });
@@ -108,9 +108,9 @@ const none = () => {
  */
 const maybeOperate = (fn: Function, ...args: any[]) => {
   try {
-    return some(fn(...args));
+    return Some(fn(...args));
   } catch (error) {
-    return none();
+    return None();
   }
 };
 
