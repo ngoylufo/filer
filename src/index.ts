@@ -1,8 +1,6 @@
 import * as path from 'path';
 import * as fs from 'fs';
 
-/* enter: types */
-
 /**
  *
  */
@@ -54,10 +52,6 @@ interface FormatAttributes {
   reader?: FormatReaderProperty;
   writer?: FormatWriterProperty;
 }
-
-/* exit: types */
-
-/* enter: utility functions */
 
 /**
  * The identity function. Returns the given object unchanged.
@@ -129,8 +123,6 @@ const maybeOperate = (fn: Function, ...args: any[]) => {
  */
 const operate = (fn: Function, ...args: any[]) =>
   maybeOperate(fn, ...args).chain(identity);
-
-/* exit: utility functions */
 
 /**
  * Creates a function that parses JSON text.
