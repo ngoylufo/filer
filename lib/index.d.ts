@@ -22,7 +22,7 @@ declare type JSONWriterOptions = {
     space?: string | number;
 };
 /**
- *
+ * Describes the properties of the reader property of a format.
  */
 declare type FormatReaderProperty = {
     options?: {
@@ -32,7 +32,7 @@ declare type FormatReaderProperty = {
     coerce?: DataParser;
 };
 /**
- *
+ * Describes the properties of the writer property of a format.
  */
 declare type FormatWriterProperty = {
     options?: {
@@ -43,7 +43,7 @@ declare type FormatWriterProperty = {
     coerce?: DataParser;
 };
 /**
- *
+ * The attributes of a file format.
  */
 interface FormatAttributes {
     reader?: FormatReaderProperty;

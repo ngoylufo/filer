@@ -28,7 +28,7 @@ type JSONWriterOptions = {
 }; 
 
 /**
- *
+ * Describes the properties of the reader property of a format.
  */
 type FormatReaderProperty = {
   options?: { encoding?: string | null; flag?: string };
@@ -36,7 +36,7 @@ type FormatReaderProperty = {
 };
 
 /**
- *
+ * Describes the properties of the writer property of a format.
  */
 type FormatWriterProperty = {
   options?: { encoding?: string | null; mode?: number | string; flag?: string };
@@ -44,7 +44,7 @@ type FormatWriterProperty = {
 };
 
 /**
- *
+ * The attributes of a file format.
  */
 interface FormatAttributes {
   reader?: FormatReaderProperty;
