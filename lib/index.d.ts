@@ -70,14 +70,14 @@ declare type Format = {
     attributes: FormatAttributes;
 };
 declare const filer: {
-    JSONReader: (options?: JSONReaderOptions) => DataParser;
-    JSONWriter: (options?: JSONWriterOptions) => (data: any) => string;
     formats: {
         has: (extension: string) => boolean;
         get: (extension: string) => FormatAttributes;
         register: ({ extension, attributes }: Format) => void;
         unregister: (extension: string) => void;
     };
+    JSONReader: (options?: JSONReaderOptions) => DataParser;
+    JSONWriter: (options?: JSONWriterOptions) => (data: any) => string;
     readFile: ({ filename, options }: ReadFileOptions) => Promise<unknown>;
     readFileSync: ({ filename, options }: ReadFileOptions) => any;
     writeFile: ({ filename, data, options }: WriteFileOptions) => Promise<void>;

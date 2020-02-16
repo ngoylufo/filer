@@ -242,9 +242,9 @@ const writeFileSync = ({ filename, data, options }: WriteFileOptions) => {
 };
 
 const filer = freeze({
+  formats,
   JSONReader,
   JSONWriter,
-  formats,
   readFile,
   readFileSync,
   writeFile,
