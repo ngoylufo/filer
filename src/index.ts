@@ -2,9 +2,9 @@ import * as path from 'path';
 import * as fs from 'fs';
 
 /**
- *
+ * A function that parses the data given to it, return the results.
  */
-type BufferParser = (buffer: Buffer) => any;
+type DataParser = (data: Buffer | String) => any;
 
 /**
  * A function that transforms the results.
@@ -34,7 +34,7 @@ type JSONWriterOptions = {
  */
 type FormatReaderProperty = {
   options?: { encoding?: string | null; flag?: string };
-  coerce?: BufferParser;
+  coerce?: DataParser;
 };
 
 /**
@@ -42,7 +42,7 @@ type FormatReaderProperty = {
  */
 type FormatWriterProperty = {
   options?: { encoding?: string | null; mode?: number | string; flag?: string };
-  coerce?: BufferParser;
+  coerce?: DataParser;
 };
 
 /**
@@ -128,7 +128,7 @@ const operate = (fn: Function, ...args: any[]) =>
  * Creates a function that parses JSON text.
  * @param options Optional arguments for the JSONReader.
  */
-const JSONReader = (options: JSONReaderOptions = {}): BufferParser => buffer =>
+const JSONReader = (options: JSONReaderOptions = {}): DataParser => buffer =>
   JSON.parse(buffer.toString(), options.reviver);
 
 /**

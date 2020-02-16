@@ -1,8 +1,8 @@
 /// <reference types="node" />
 /**
- *
+ * A function that parses the data given to it, return the results.
  */
-declare type BufferParser = (buffer: Buffer) => any;
+declare type DataParser = (data: Buffer | String) => any;
 /**
  * A function that transforms the results.
  * @param this The current object being transformed.
@@ -31,7 +31,7 @@ declare type FormatReaderProperty = {
         encoding?: string | null;
         flag?: string;
     };
-    coerce?: BufferParser;
+    coerce?: DataParser;
 };
 /**
  *
@@ -42,7 +42,7 @@ declare type FormatWriterProperty = {
         mode?: number | string;
         flag?: string;
     };
-    coerce?: BufferParser;
+    coerce?: DataParser;
 };
 /**
  *
@@ -52,7 +52,7 @@ interface FormatAttributes {
     writer?: FormatWriterProperty;
 }
 declare const filer: {
-    JSONReader: (options?: JSONReaderOptions) => BufferParser;
+    JSONReader: (options?: JSONReaderOptions) => DataParser;
     JSONWriter: (options?: JSONWriterOptions) => (data: any) => string;
     formats: {
         (): {
