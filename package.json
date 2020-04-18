@@ -1,6 +1,6 @@
 {
   "name": "@ngoylufo/filer",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "A simple file reader/writer for node.",
   "main": "./lib/index.js",
   "scripts": {
