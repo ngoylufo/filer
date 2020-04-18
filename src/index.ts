@@ -1,5 +1,6 @@
 import * as path from 'path';
 import * as fs from 'fs';
+import * as utils from './utils';
 
 /**
  * A function that parses the data given to it, return the results.
@@ -71,35 +72,6 @@ type Format = {
 };
 
 /**
- * The identity function. Returns the given object unchanged.
- * @param x The object.
- */
-const identity = <T>(x: T): T => x;
-
-/**
- * Given a type, returns a predicate that checks if any given
- *    object belongs to that type.
- * @param type The type the predicate checks objects against.
- */
-const is = (type: any) => (x: Object) => Object(x) instanceof type;
-
-/**
- * Deep freezes the given object.
- * @param object The object to freeze.
- */
-const freeze = <T>(object: T): T => {
-  const freezable = (o: Object) => is(Object)(o) && !is(String)(o);
-
-  Object.values(object).forEach(value => {
-    if (value && freezable(value)) {
-      freeze(value);
-    }
-  });
-
-  return Object.freeze(object);
-};
-
-/**
  * The **Some** case for the Option sum type.
  * @param value The value for the case.
  */
@@ -107,7 +79,7 @@ const Some = <V>(value: V) => {
   const map = (fn: Function) => Some(fn(value));
   const chain = (fn: Function) => fn(value);
 
-  return freeze({ value, map, chain });
+  return utils.freeze({ value, map, chain });
 };
 
 /**
@@ -117,7 +89,7 @@ const None = () => {
   const map = (fn: Function) => None();
   const chain = (fn: Function) => undefined;
 
-  return freeze({ map, chain });
+  return utils.freeze({ map, chain });
 };
 
 /**
@@ -158,9 +130,9 @@ const formats = (function() {
    */
   const register = ({ extension, attributes }: Format) => {
     const { reader = {}, writer = {} } = attributes;
-    const format = freeze({ reader, writer });
+    const format = utils.freeze({ reader, writer });
 
-    (is(String)(extension) ? [extension] : extension).forEach((ext: string) => {
+    (utils.is(String)(extension) ? [extension] : extension).forEach((ext: string) => {
       formats = { ...formats, [ext]: format };
     });
 
@@ -176,7 +148,7 @@ const formats = (function() {
     formats = Object.freeze(others);
   };
 
-  return freeze({ has, get, register, unregister });
+  return utils.freeze({ has, get, register, unregister });
 })();
 
 /**
@@ -215,12 +187,12 @@ const readFileSync = ({ filename, options }: ReadFileOptions) => {
   const { reader = {} } = formats.get(path.extname(filename));
   options = Object.assign({}, reader.options, options);
 
-  if (reader.coerce && is(Function)(reader.coerce)) {
-    const buffer = mop(fs.readFileSync, filename, options).chain(identity);
+  if (reader.coerce && utils.is(Function)(reader.coerce)) {
+    const buffer = mop(fs.readFileSync, filename, options).chain(utils.identity);
     return Buffer.isBuffer(buffer) ? reader.coerce(buffer) : buffer;
   }
 
-  return mop(fs.readFileSync, filename, options).chain(identity);
+  return mop(fs.readFileSync, filename, options).chain(utils.identity);
 };
 
 /**
@@ -239,14 +211,14 @@ const writeFileSync = ({ filename, data, options }: WriteFileOptions) => {
   const { writer = {} } = formats.get(path.extname(filename));
   options = Object.assign({}, writer.options, options);
 
-  if (writer.coerce && is(Function)(writer.coerce)) {
+  if (writer.coerce && utils.is(Function)(writer.coerce)) {
     data = writer.coerce(data);
   }
 
   mop(fs.writeFileSync, filename, data, options);
 };
 
-const filer = freeze({
+const filer = utils.freeze({
   formats,
   JSONReader,
   JSONWriter,
