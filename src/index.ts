@@ -171,6 +171,11 @@ const JSONWriter = (options: JSONWriterOptions = {}) => (data: any) =>
 const exists = (path: string) => fs.existsSync(path);
 
 /**
+ * Checks whether the given path is a file.
+ */
+const isFile = (path: string) => fs.statSync(path).isFile();
+
+/**
  * Reads the contents of a file synchronously.
  */
 const readFile = ({ filename, options }: ReadFileOptions) => {
@@ -223,6 +228,7 @@ const filer = utils.freeze({
   JSONReader,
   JSONWriter,
   exists,
+  isFile,
   readFile,
   readFileSync,
   writeFile,

@@ -79,6 +79,7 @@ declare const filer: {
     JSONReader: (options?: JSONReaderOptions) => DataParser;
     JSONWriter: (options?: JSONWriterOptions) => (data: any) => string;
     exists: (path: string) => boolean;
+    isFile: (path: string) => boolean;
     readFile: ({ filename, options }: ReadFileOptions) => Promise<unknown>;
     readFileSync: ({ filename, options }: ReadFileOptions) => any;
     writeFile: ({ filename, data, options }: WriteFileOptions) => Promise<void>;
